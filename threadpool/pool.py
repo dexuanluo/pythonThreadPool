@@ -1,7 +1,7 @@
 # _*_ encoding=utf-8 _*_
 import threading
 import psutil
-from threadpool.task import Task
+from threadpool.task import Task, AsyncTask
 from threadpool.queue import ThreadingSafeQueue, ThreadingSafeQueueException
 class ProcessThread(threading.Thread):
     def __init__(self, task_queue, *args, **kwargs):
@@ -19,7 +19,8 @@ class ProcessThread(threading.Thread):
             if not isinstance(item, Task):
                 continue
             result = item.callable(*item.args, **item.kwargs)
-            
+            if isinstance(item, AsyncTask):
+                item.set_result(result)
     def stop(self):
         self.dismiss_flag.set()
 
