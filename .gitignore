@@ -3,3 +3,5 @@ test.py
 .DS_Store
 .vscode
 /threadpool/__pycache__
+client.py
+server.py
